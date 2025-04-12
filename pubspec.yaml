@@ -1,0 +1,15 @@
+name: nike
+description: A Flutter package for [Nike-related functionality].
+
+version: 1.0.0
+
+environment:
+  sdk: ">=2.12.0 <4.0.0"  # Enable null safety
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
