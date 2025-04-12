@@ -1,26 +1,3 @@
-// pubsec yaml file
-
-// name: simple_shopping_app
-// description: A simple Flutter shopping cart demo.
-// version: 1.0.0+1
-
-// environment:
-//   sdk: ">=3.0.0 <4.0.0"
-
-// dependencies:
-//   flutter:
-//     sdk: flutter
-//   cupertino_icons: ^1.0.2
-
-// dev_dependencies:
-//   flutter_test:
-//     sdk: flutter
-
-// flutter:
-//   uses-material-design: true
-
-
-
 import 'package:flutter/material.dart';
 
 void main() => runApp(ShoppingApp());
@@ -30,7 +7,7 @@ class ShoppingApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Simple Shopping App',
-      theme: ThemeData(primarySwatch: Colors.blue),
+      theme: ThemeData(primarySwatch: Colors.teal),
       home: ProductListPage(),
     );
   }
@@ -42,11 +19,12 @@ class Product {
   final double price;
   final String imageUrl;
 
-  Product(
-      {required this.name,
-      required this.category,
-      required this.price,
-      required this.imageUrl});
+  Product({
+    required this.name,
+    required this.category,
+    required this.price,
+    required this.imageUrl,
+  });
 }
 
 class CartItem {
@@ -64,29 +42,61 @@ class ProductListPage extends StatefulWidget {
 class _ProductListPageState extends State<ProductListPage> {
   List<Product> allProducts = [
     Product(
-        name: 'Shoes',
-        category: 'Footwear',
-        price: 59.99,
-        imageUrl:
-            'https://images.unsplash.com/photo-1542291026-7eec264c27ff?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8c2hvZXN8ZW58MHx8MHx8fDA%3D'),
+      name: 'Shoes',
+      category: 'Footwear',
+      price: 59.99,
+      imageUrl:
+          'https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=500&q=60',
+    ),
     Product(
-        name: 'T-Shirt',
-        category: 'Clothing',
-        price: 19.99,
-        imageUrl:
-            'https://cdn.pixabay.com/photo/2016/12/06/09/31/blank-1886008_640.png'),
+      name: 'T-Shirt',
+      category: 'Clothing',
+      price: 19.99,
+      imageUrl:
+          'https://cdn.pixabay.com/photo/2016/12/06/09/31/blank-1886008_640.png',
+    ),
     Product(
-        name: 'Watch',
-        category: 'Accessories',
-        price: 120.0,
-        imageUrl:
-            'https://cdn.pixabay.com/photo/2016/12/06/09/31/blank-1886008_640.png'),
+      name: 'Watch',
+      category: 'Accessories',
+      price: 120.0,
+      imageUrl:
+          'https://cdn.pixabay.com/photo/2016/06/16/16/44/clock-1461689_1280.jpg',
+    ),
     Product(
-        name: 'Backpack',
-        category: 'Bags',
-        price: 40.0,
-        imageUrl:
-            'https://cdn.pixabay.com/photo/2016/12/06/09/31/blank-1886008_640.png'),
+      name: 'Backpack',
+      category: 'Bags',
+      price: 40.0,
+      imageUrl:
+          'https://cdn.pixabay.com/photo/2016/03/27/22/22/backpack-1283863_640.jpg',
+    ),
+    Product(
+      name: 'Sunglasses',
+      category: 'Accessories',
+      price: 30.0,
+      imageUrl:
+          'https://cdn.pixabay.com/photo/2016/11/22/22/25/sunglasses-1850593_640.jpg',
+    ),
+    Product(
+      name: 'Laptop',
+      category: 'Electronics',
+      price: 999.99,
+      imageUrl:
+          'https://cdn.pixabay.com/photo/2014/05/02/21/50/home-office-336378_640.jpg',
+    ),
+    Product(
+      name: 'Headphones',
+      category: 'Electronics',
+      price: 49.99,
+      imageUrl:
+          'https://cdn.pixabay.com/photo/2016/11/19/14/00/headphones-1838356_640.jpg',
+    ),
+    Product(
+      name: 'Camera',
+      category: 'Photography',
+      price: 299.99,
+      imageUrl:
+          'https://cdn.pixabay.com/photo/2017/08/06/09/03/camera-2581318_640.jpg',
+    ),
   ];
 
   List<CartItem> cart = [];
@@ -94,8 +104,9 @@ class _ProductListPageState extends State<ProductListPage> {
 
   void addToCart(Product product) {
     setState(() {
-      final index =
-          cart.indexWhere((item) => item.product.name == product.name);
+      final index = cart.indexWhere(
+        (item) => item.product.name == product.name,
+      );
       if (index != -1) {
         cart[index].quantity++;
       } else {
@@ -108,7 +119,8 @@ class _ProductListPageState extends State<ProductListPage> {
     Navigator.push(
       context,
       MaterialPageRoute(
-          builder: (context) => CartPage(cart: cart, onUpdateCart: updateCart)),
+        builder: (context) => CartPage(cart: cart, onUpdateCart: updateCart),
+      ),
     );
   }
 
@@ -121,7 +133,9 @@ class _ProductListPageState extends State<ProductListPage> {
   @override
   Widget build(BuildContext context) {
     List<Product> filteredProducts = allProducts
-        .where((p) => p.name.toLowerCase().contains(searchQuery.toLowerCase()))
+        .where(
+          (p) => p.name.toLowerCase().contains(searchQuery.toLowerCase()),
+        )
         .toList();
 
     return Scaffold(
@@ -147,15 +161,32 @@ class _ProductListPageState extends State<ProductListPage> {
         ),
       ),
       body: GridView.count(
-        crossAxisCount: 2,
+        crossAxisCount: 4,
+        childAspectRatio: 0.65,
+        padding: EdgeInsets.all(8),
         children: filteredProducts.map((product) {
           return Card(
+            elevation: 4,
+            margin: EdgeInsets.all(8),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                Image.network(product.imageUrl, height: 80, fit: BoxFit.cover),
-                SizedBox(height: 4),
-                Text(product.name,
-                    style: TextStyle(fontWeight: FontWeight.bold)),
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(8),
+                  child: Image.network(
+                    product.imageUrl,
+                    height: 80,
+                    width: 100,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+                Text(
+                  product.name,
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
                 Text('\$${product.price.toStringAsFixed(2)}'),
                 ElevatedButton(
                   onPressed: () => addToCart(product),
@@ -190,7 +221,9 @@ class _CartPageState extends State<CartPage> {
   }
 
   double get total => localCart.fold(
-      0, (sum, item) => sum + item.product.price * item.quantity);
+        0,
+        (sum, item) => sum + item.product.price * item.quantity,
+      );
 
   void removeItem(int index) {
     setState(() {
@@ -249,14 +282,17 @@ class _CartPageState extends State<CartPage> {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       IconButton(
-                          icon: Icon(Icons.remove),
-                          onPressed: () => updateQuantity(index, -1)),
+                        icon: Icon(Icons.remove),
+                        onPressed: () => updateQuantity(index, -1),
+                      ),
                       IconButton(
-                          icon: Icon(Icons.add),
-                          onPressed: () => updateQuantity(index, 1)),
+                        icon: Icon(Icons.add),
+                        onPressed: () => updateQuantity(index, 1),
+                      ),
                       IconButton(
-                          icon: Icon(Icons.delete),
-                          onPressed: () => removeItem(index)),
+                        icon: Icon(Icons.delete),
+                        onPressed: () => removeItem(index),
+                      ),
                     ],
                   ),
                 );
@@ -264,8 +300,10 @@ class _CartPageState extends State<CartPage> {
             ),
       bottomNavigationBar: Padding(
         padding: EdgeInsets.all(12),
-        child: Text('Total: \$${total.toStringAsFixed(2)}',
-            style: TextStyle(fontSize: 20)),
+        child: Text(
+          'Total: \$${total.toStringAsFixed(2)}',
+          style: TextStyle(fontSize: 20),
+        ),
       ),
     );
   }
@@ -276,8 +314,11 @@ class CheckoutPage extends StatefulWidget {
   final double total;
   final VoidCallback onComplete;
 
-  CheckoutPage(
-      {required this.cartItems, required this.total, required this.onComplete});
+  CheckoutPage({
+    required this.cartItems,
+    required this.total,
+    required this.onComplete,
+  });
 
   @override
   _CheckoutPageState createState() => _CheckoutPageState();
@@ -301,7 +342,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                 Navigator.popUntil(context, (route) => route.isFirst);
               },
               child: Text('OK'),
-            )
+            ),
           ],
         ),
       );
@@ -318,8 +359,10 @@ class _CheckoutPageState extends State<CheckoutPage> {
           key: _formKey,
           child: Column(
             children: [
-              Text('Total: \$${widget.total.toStringAsFixed(2)}',
-                  style: TextStyle(fontSize: 18)),
+              Text(
+                'Total: \$${widget.total.toStringAsFixed(2)}',
+                style: TextStyle(fontSize: 18),
+              ),
               SizedBox(height: 12),
               TextFormField(
                 decoration: InputDecoration(labelText: 'Name'),
